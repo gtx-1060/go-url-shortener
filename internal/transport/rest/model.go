@@ -3,13 +3,13 @@ package rest
 import "time"
 
 type UrlToShort struct {
-	url    string
-	author string
+	Url    string `json:"url"`
+	Author string `json:"author"`
 }
 
 type ShortenUrl struct {
-	original string
-	shorten  string
-	author   string
-	created  time.Time
+	Original string    `json:"original"`
+	Shorten  string    `json:"shorten"`
+	Author   string    `json:"author"`
+	Created  time.Time `json:"created"`
 }

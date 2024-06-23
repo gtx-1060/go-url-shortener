@@ -16,3 +16,6 @@ go.work.sum
 
 # env file
 .env
+
+# sqllite db file
+*.db

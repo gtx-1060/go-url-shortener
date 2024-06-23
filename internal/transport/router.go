@@ -6,10 +6,11 @@ import (
 )
 
 func InitRouter() *gin.Engine {
-	context := rest.HandlerContext{}
+	handler := rest.Handler{}
 	engine := gin.Default()
 	engine.Use(rest.CORSMiddleware())
-	engine.POST("/url", context.MakeShortUrl())
-	engine.GET("/s/:id", context.GetShortUrl())
+	engine.POST("/url", handler.MakeShortUrl())
+	engine.GET("/url", handler.GetShortUrl())
+	engine.GET("/s/:id", handler.FollowShortUrl())
 	return engine
 }
