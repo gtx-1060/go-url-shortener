@@ -7,35 +7,35 @@ import (
 
 const sqliteSchema = `
 CREATE TABLE IF NOT EXISTS m_user (
-	id INTEGER NOT NULL PRIMARY KEY,
-	name CHAR(32),
-	created DATETIME,
-	active BOOLEAN
+	Id INTEGER NOT NULL PRIMARY KEY,
+	Name VARCHAR(32) UNIQUE,
+	Created DATETIME,
+	Active BOOLEAN
 );
 
-CREATE TABLE IF NOT EXISTS url (
-	id STRING PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS Url (
+	Id VARCHAR(64) NOT NULL PRIMARY KEY,
 	user_id INTEGER,
-	url STRING,
-	created DATETIME,
-	active BOOLEAN,
-	FOREIGN KEY (user_id) REFERENCES m_user(id)
+	Url STRING,
+	Created DATETIME,
+	Active BOOLEAN,
+	FOREIGN KEY (user_id) REFERENCES m_user(Id)
 );
 `
 
 type User struct {
-	id      uint64
-	name    string
-	created time.Time
-	active  bool
+	Id      uint64
+	Name    string
+	Created time.Time
+	Active  bool
 }
 
 type Url struct {
-	id      string
-	userId  uint64
-	url     string
-	created time.Time
-	active  bool
+	Id      string
+	UserId  uint64
+	Url     string
+	Created time.Time
+	Active  bool
 }
 
 func CreateTables(db *sql.DB) {

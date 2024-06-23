@@ -16,7 +16,7 @@ func (h Handler) MakeShortUrl() gin.HandlerFunc {
 			ctx.JSON(http.StatusBadRequest, gin.H{})
 			return
 		}
-		ctx.JSON(http.StatusAccepted, ShortenUrl{Author: url.Author})
+		ctx.JSON(http.StatusAccepted, ShortenUrl{})
 	}
 }
 
@@ -27,7 +27,7 @@ func (h Handler) GetShortUrl() gin.HandlerFunc {
 			ctx.JSON(http.StatusBadRequest, gin.H{})
 		}
 		fmt.Println(shorten)
-		ctx.JSON(http.StatusAccepted, ShortenUrl{Author: shorten})
+		ctx.JSON(http.StatusAccepted, ShortenUrl{})
 	}
 }
 
@@ -39,5 +39,27 @@ func (h Handler) FollowShortUrl() gin.HandlerFunc {
 		}
 		fmt.Println(shorten)
 		ctx.Redirect(http.StatusMovedPermanently, "https://google.com")
+	}
+}
+
+func (h Handler) SetUrlAccessibility() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		q, ok := ctx.GetQuery("access")
+		if ok && q == "true" {
+			// TODO set url active to true
+		} else {
+			// TODO set url active to false
+		}
+	}
+}
+
+func (h Handler) SetUserAccessibility() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		q, ok := ctx.GetQuery("access")
+		if ok && q == "true" {
+			// TODO set user active to true
+		} else {
+			// TODO set user active to false
+		}
 	}
 }

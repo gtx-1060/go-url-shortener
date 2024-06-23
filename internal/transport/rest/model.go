@@ -7,9 +7,15 @@ type UrlToShort struct {
 	Author string `json:"author"`
 }
 
+type User struct {
+	Name    string    `json:"name"`
+	Created time.Time `json:"created"`
+	Active  bool      `json:"active"`
+}
+
 type ShortenUrl struct {
 	Original string    `json:"original"`
 	Shorten  string    `json:"shorten"`
-	Author   string    `json:"author"`
+	Author   User      `json:"author"`
 	Created  time.Time `json:"created"`
 }
