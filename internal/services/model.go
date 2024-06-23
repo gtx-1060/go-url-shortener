@@ -1,6 +1,10 @@
-package rest
+package services
 
 import "time"
+
+type Error struct {
+	Message string `json:"message"`
+}
 
 type UrlToShort struct {
 	Url    string `json:"url"`
@@ -18,4 +22,8 @@ type ShortenUrl struct {
 	Shorten  string    `json:"shorten"`
 	Author   User      `json:"author"`
 	Created  time.Time `json:"created"`
+}
+
+func ErrorResponse(msg string) Error {
+	return Error{msg}
 }

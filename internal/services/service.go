@@ -8,7 +8,6 @@ import (
 	"time"
 	"url-shortener/internal/database"
 	"url-shortener/internal/models"
-	"url-shortener/internal/transport/rest"
 )
 
 func calcHash(url string) string {
@@ -24,12 +23,12 @@ func calcHash(url string) string {
 	return string(result)
 }
 
-func urlToTransportModel(url models.Url, user models.User) *rest.ShortenUrl {
-	return &rest.ShortenUrl{
+func urlToTransportModel(url models.Url, user models.User) *ShortenUrl {
+	return &ShortenUrl{
 		Original: url.Url,
 		Shorten:  url.Id,
 		Created:  url.Created,
-		Author:   rest.User{Name: user.Name, Created: user.Created, Active: user.Active},
+		Author:   User{Name: user.Name, Created: user.Created, Active: user.Active},
 	}
 }
 
@@ -43,7 +42,7 @@ func closeDbCon(db *sql.DB) {
 	printIfError(db.Close())
 }
 
-func MakeShortUrl(url rest.UrlToShort) (*rest.ShortenUrl, error) {
+func MakeShortUrl(url UrlToShort) (*ShortenUrl, error) {
 	db := database.ConnectDB()
 	defer closeDbCon(db)
 	tx, err := db.Begin()
@@ -83,10 +82,14 @@ func MakeShortUrl(url rest.UrlToShort) (*rest.ShortenUrl, error) {
 func GetUrlByShort(shortUrl string) (string, error) {
 	db := database.ConnectDB()
 	defer closeDbCon(db)
-	return models.GetUrl(db, shortUrl)
+	if r, err := models.GetUrl(db, shortUrl); err != nil {
+		return r, errors.New("url not available")
+	} else {
+		return r, nil
+	}
 }
 
-func GetUrlDataByShort(shortUrl string) (*rest.ShortenUrl, error) {
+func GetUrlDataByShort(shortUrl string) (*ShortenUrl, error) {
 	db := database.ConnectDB()
 	defer closeDbCon(db)
 	urlModel, userModel, err := models.GetUrlData(db, shortUrl)
