@@ -62,19 +62,19 @@ func GetUrl(db DB, id string) (string, error) {
 }
 
 func GetUrlData(db DB, id string) (*Url, *User, error) {
-	url := &Url{}
-	user := &User{}
+	url := Url{}
+	user := User{}
 	row := db.QueryRow(`
-		SELECT (Url.Id, Url.Url, Url.Created, Url.Active, mu.Id, mu.Name, mu.Created, mu.Active) 
+		SELECT Url.Id, Url.Url, Url.Created, Url.Active, mu.Id, mu.Name, mu.Created, mu.Active
 		FROM Url JOIN main.m_user mu on Url.user_id = mu.Id WHERE Url.Id == ?`, id)
-	err := row.Scan(&url.Id, &url.Url, &url.Created, &url.Active, &url.Id,
+	err := row.Scan(&url.Id, &url.Url, &url.Created, &url.Active,
 		&user.Id, &user.Name, &user.Created, &user.Active)
 	if err != nil {
 		fmt.Println(err)
 		return nil, nil, UrlGettingError
 	}
 	url.UserId = user.Id
-	return url, user, nil
+	return &url, &user, nil
 }
 
 func UpdateUrlAccessibility(db DB, id string, active bool) error {

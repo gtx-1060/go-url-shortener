@@ -33,7 +33,6 @@ func (h Handler) GetShortUrl() gin.HandlerFunc {
 			ctx.JSON(http.StatusBadRequest, services.ErrorResponse("url is empty"))
 			return
 		}
-
 		if result, err := services.GetUrlDataByShort(shorten); err != nil {
 			ctx.JSON(http.StatusBadRequest, services.ErrorResponse(err.Error()))
 		} else {
@@ -52,7 +51,7 @@ func (h Handler) FollowShortUrl() gin.HandlerFunc {
 			ctx.JSON(http.StatusBadRequest, services.ErrorResponse(err.Error()))
 		} else {
 			fmt.Println(url)
-			ctx.Redirect(http.StatusMovedPermanently, url)
+			ctx.Redirect(http.StatusFound, url)
 		}
 	}
 }
