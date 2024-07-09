@@ -1,14 +1,15 @@
-package transport
+package apis
 
 import (
 	"github.com/gin-gonic/gin"
-	"url-shortener/internal/transport/rest"
+	. "url-shortener/apis/rest"
+	. "url-shortener/services"
 )
 
-func InitRouter() *gin.Engine {
-	handler := rest.Handler{}
+func InitRouter(service *Service) *gin.Engine {
+	handler := Handler{service}
 	engine := gin.Default()
-	engine.Use(rest.CORSMiddleware())
+	engine.Use(CORSMiddleware("*"))
 	engine.POST("/url", handler.MakeShortUrl())
 	engine.GET("/url", handler.GetShortUrl())
 	engine.GET("/s/:id", handler.FollowShortUrl())
