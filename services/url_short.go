@@ -15,10 +15,8 @@ const (
 	maxCreateUrlAttempts = 10
 )
 
-func (serv *Service) MakeShortUrl(url dtos.UrlToShort) (*dtos.ShortenUrl, error) {
+func (serv *Service) MakeShortUrl(ctx context.Context, url dtos.UrlToShort) (*dtos.ShortenUrl, error) {
 	var shortenUrl *dtos.ShortenUrl
-	ctx := context.TODO()
-	defer ctx.Done()
 	//txOptions := sql.TxOptions{ReadOnly: false, Isolation: sql.}
 
 	txError := serv.dao.StartTx(ctx, nil, func(query daos.RWQuery) error {

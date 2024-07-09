@@ -16,14 +16,14 @@ func getDSN() string {
 func Open() *sql.DB {
 	db, err := sql.Open("sqlite3", getDSN())
 	if err != nil {
-		log.Fatalf("cant open sqlite db: %s", err)
+		log.Fatalf("cant open sqlite db: %s\n", err)
 	}
 	db.SetMaxIdleConns(10)
 	db.SetMaxOpenConns(10)
 	db.SetConnMaxLifetime(time.Duration(3) * time.Minute)
 	err = db.Ping()
 	if err != nil {
-		log.Fatalf("cant open sqlite db: %s", err)
+		log.Fatalf("cant open sqlite db: %s\n", err)
 	}
 	return db
 }
@@ -31,14 +31,14 @@ func Open() *sql.DB {
 func OpenNonConcurrent() *sql.DB {
 	db, err := sql.Open("sqlite3", getDSN())
 	if err != nil {
-		log.Fatalf("cant open sqlite db non-concurrent: %s", err)
+		log.Fatalf("cant open sqlite db non-concurrent: %s\n", err)
 	}
 	db.SetMaxIdleConns(1)
 	db.SetMaxOpenConns(1)
 	db.SetConnMaxLifetime(time.Duration(3) * time.Minute)
 	err = db.Ping()
 	if err != nil {
-		log.Fatalf("cant open sqlite db non-concurrent: %s", err)
+		log.Fatalf("cant open sqlite db non-concurrent: %s\n", err)
 	}
 	return db
 }

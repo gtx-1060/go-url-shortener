@@ -20,7 +20,7 @@ func (h Handler) MakeShortUrl() gin.HandlerFunc {
 			return
 		}
 
-		if result, err := h.Service.MakeShortUrl(url); err != nil {
+		if result, err := h.Service.MakeShortUrl(ctx, url); err != nil {
 			ctx.JSON(http.StatusBadRequest, dtos.ErrorResponse(err.Error()))
 		} else {
 			ctx.JSON(http.StatusAccepted, result)
