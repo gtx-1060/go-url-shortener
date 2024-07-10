@@ -45,14 +45,14 @@ func (serv *Service) MakeShortUrl(ctx context.Context, url dtos.UrlToShort) (*dt
 				shortenUrl = dtos.UrlDataToTransportModel(urlModel, userModel)
 				return nil
 			}
-			if !errors.Is(err, sqlite3.ErrConstraint) {
+			if sqliteErr, ok := err.(sqlite3.Error); !ok || sqliteErr.Code != sqlite3.ErrConstraint {
 				return err
 			}
 		}
 		return UrlCollisionsError
 	})
 	if txError != nil {
-		log.Printf("error while creating short version of URL: %v", txError)
+		log.Printf("Creating short version of URL: %v", txError)
 		return nil, ShortUrlCreationError
 	}
 	return shortenUrl, nil
