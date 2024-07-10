@@ -18,9 +18,8 @@ const (
 func (serv *Service) MakeShortUrl(ctx context.Context, url dtos.UrlToShort) (*dtos.ShortenUrl, error) {
 	var shortenUrl *dtos.ShortenUrl
 	//txOptions := sql.TxOptions{ReadOnly: false, Isolation: sql.}
-
 	txError := serv.dao.StartTx(ctx, nil, func(query daos.RWQuery) error {
-		urlModel := daos.Url{Url: url.Url, Created: time.Now(), Active: true}
+		urlModel := daos.Url{Url: url.Url, Created: time.Now(), Expiration: url.Expiration}
 		userModel := daos.User{Name: url.Author, Created: time.Now(), Active: true}
 
 		user, err := query.GetUser(url.Author)
@@ -59,7 +58,7 @@ func (serv *Service) MakeShortUrl(ctx context.Context, url dtos.UrlToShort) (*dt
 }
 
 func (serv *Service) GetUrlByShort(shortUrl string) (string, error) {
-	if r, err := serv.dao.GetUrl(shortUrl); err != nil {
+	if r, err := serv.dao.GetActiveUrl(shortUrl); err != nil {
 		return r, errors.New("url not available")
 	} else {
 		return r, nil

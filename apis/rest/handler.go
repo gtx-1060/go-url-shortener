@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"time"
 	"url-shortener/dtos"
 	. "url-shortener/services"
 )
@@ -17,6 +18,10 @@ func (h Handler) MakeShortUrl() gin.HandlerFunc {
 		url := dtos.UrlToShort{}
 		if ok := ctx.ShouldBindJSON(&url); ok != nil {
 			ctx.JSON(http.StatusBadRequest, dtos.ErrorResponse("there aren't needed args"))
+			return
+		}
+		if time.Now().After(url.Expiration) {
+			ctx.JSON(http.StatusBadRequest, dtos.ErrorResponse("incorrect expiration time"))
 			return
 		}
 
@@ -54,28 +59,6 @@ func (h Handler) FollowShortUrl() gin.HandlerFunc {
 		} else {
 			fmt.Println(url)
 			ctx.Redirect(http.StatusFound, url)
-		}
-	}
-}
-
-func (h Handler) SetUrlAccessibility() gin.HandlerFunc {
-	return func(ctx *gin.Context) {
-		q, ok := ctx.GetQuery("access")
-		if ok && q == "true" {
-			// TODO set url active to true
-		} else {
-			// TODO set url active to false
-		}
-	}
-}
-
-func (h Handler) SetUserAccessibility() gin.HandlerFunc {
-	return func(ctx *gin.Context) {
-		q, ok := ctx.GetQuery("access")
-		if ok && q == "true" {
-			// TODO set user active to true
-		} else {
-			// TODO set user active to false
 		}
 	}
 }

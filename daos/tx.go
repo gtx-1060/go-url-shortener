@@ -28,7 +28,7 @@ func (dao *Dao) execTx(ctx context.Context, options *sql.TxOptions, fn func(quer
 	return tx.Commit()
 }
 
-func (dao *Dao) retryTillFree(fn func(retryDao *Dao) error) error {
+func (dao *Dao) RetryTillFree(fn func(retryDao *Dao) error) error {
 	var i uint
 	for i = 0; i < dao.maxRetries; i++ {
 		err := fn(dao)
@@ -45,7 +45,7 @@ func (dao *Dao) retryTillFree(fn func(retryDao *Dao) error) error {
 }
 
 func (dao *Dao) StartTx(ctx context.Context, options *sql.TxOptions, op func(query RWQuery) error) error {
-	return dao.retryTillFree(func(retryDao *Dao) error {
+	return dao.RetryTillFree(func(retryDao *Dao) error {
 		return retryDao.execTx(ctx, options, op)
 	})
 }

@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS url (
 	user_id INTEGER,
 	url VARCHAR(256),
 	created DATETIME,
-	active BOOLEAN,
+	expiration DATETIME NOT NULL,
 	FOREIGN KEY (user_id) REFERENCES m_user(id)
 );
 `
