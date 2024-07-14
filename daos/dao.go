@@ -32,20 +32,6 @@ type Dao struct {
 	maxRetries     uint
 }
 
-/*
-func (q Query) QueryRow(query string, args ...any) *sql.Row {
-	return q.db.QueryRow(query, args)
-}
-
-func (q Query) Exec(query string, args ...any) (sql.Result, error) {
-	return q.db.Exec(query, args)
-}
-
-func (q Query) Query(query string, args ...any) (*sql.Rows, error) {
-	return q.db.Query(query, args)
-}
-*/
-
 const schema = `
 CREATE TABLE IF NOT EXISTS m_user (
 	id INTEGER NOT NULL PRIMARY KEY,

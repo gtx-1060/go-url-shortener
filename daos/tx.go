@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/mattn/go-sqlite3"
+	"log"
 	"time"
 )
 
@@ -39,6 +40,7 @@ func (dao *Dao) RetryTillFree(fn func(retryDao *Dao) error) error {
 		if !ok || sqlErr.Code != sqlite3.ErrBusy || sqlErr.Code != sqlite3.ErrLocked {
 			return err
 		}
+		log.Println("SQLite: Retry")
 		time.Sleep(time.Duration(dao.retryTimeoutMs) * time.Millisecond)
 	}
 	return ErrMaxRetriesExceed

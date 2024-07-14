@@ -46,8 +46,8 @@ func StartApp() {
 
 	log.Println("Server shutdown...")
 	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(shutdownTimeoutS)*time.Second)
-
 	defer cancel()
+
 	if err := srv.Shutdown(ctx); err != nil {
 		log.Fatalf("Server shutdown error: %v\n", err)
 	}

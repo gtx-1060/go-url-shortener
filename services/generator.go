@@ -13,7 +13,7 @@ func safeRune(b byte) rune {
 }
 
 // TODO: Simplify code below
-func generateShortVersion(url string) string {
+func randomFromString(url string) string {
 	data := []byte(url)
 	hash := md5.Sum(append(data, salt[:]...))
 	result := make([]rune, 0, 8)

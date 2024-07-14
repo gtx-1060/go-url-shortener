@@ -26,7 +26,7 @@ func (q Query) GetUrl(id string) (string, error) {
 
 func (q Query) GetActiveUrl(id string) (string, error) {
 	var url string
-	row := q.db.QueryRow("SELECT url FROM url WHERE id == ? AND expiration < datetime('now')", id)
+	row := q.db.QueryRow("SELECT url FROM url WHERE id == ? AND expiration > datetime('now')", id)
 	err := row.Scan(&url)
 	return url, err
 }
