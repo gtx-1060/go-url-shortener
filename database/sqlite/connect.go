@@ -10,13 +10,21 @@ import (
 
 var (
 	// DSN “file:test.db“ for example
-	_DSN        = os.Getenv("SQLITE_DSN")
-	_RW_DSN     = _DSN + "?_txlock=immediate"
-	_R_ONLY_DSN = _DSN + "?_journal=wal"
+	DSN        = getDsnBase()
+	RW_DSN     = DSN + "?_txlock=immediate"
+	R_ONLY_DSN = DSN + "?_journal=wal"
 )
 
+func getDsnBase() string {
+	dsn := os.Getenv("SQLITE_DSN")
+	if dsn == "" {
+		dsn = "file:TEST.db"
+	}
+	return dsn
+}
+
 func Open() *sql.DB {
-	db, err := sql.Open("sqlite3", _R_ONLY_DSN)
+	db, err := sql.Open("sqlite3", R_ONLY_DSN)
 	if err != nil {
 		log.Fatalf("cant open sqlite db: %s\n", err)
 	}
@@ -31,7 +39,7 @@ func Open() *sql.DB {
 }
 
 func OpenNonConcurrent() *sql.DB {
-	db, err := sql.Open("sqlite3", _RW_DSN)
+	db, err := sql.Open("sqlite3", RW_DSN)
 	if err != nil {
 		log.Fatalf("cant open sqlite db non-concurrent: %s\n", err)
 	}
