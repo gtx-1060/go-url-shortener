@@ -130,7 +130,7 @@ func BenchmarkService_MakeUrl(b *testing.B) {
 		url := dtos.UrlToShort{
 			Url:        "github.com/techschool/simplebank/blob/master/db/sqlc/db.go",
 			Expiration: time.Now().Add(time.Duration(5) * time.Minute),
-			Author:     randomFromString("vlad"),
+			Author:     RandomFromString("vlad"),
 		}
 		_, err := service.MakeShortUrl(context.TODO(), url)
 		if err != nil {

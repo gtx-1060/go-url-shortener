@@ -49,7 +49,7 @@ func (serv *Service) MakeShortUrl(ctx context.Context, url dtos.UrlToShort) (*dt
 		urlModel.UserId = userModel.Id
 
 		for i := 0; i < maxCreateUrlAttempts; i++ {
-			urlModel.Id = randomFromString(url.Url)
+			urlModel.Id = RandomString(8)
 			if err = query.CreateUrl(urlModel); err == nil {
 				shortenUrl = dtos.UrlDataToTransportModel(urlModel, *userModel)
 				return nil
